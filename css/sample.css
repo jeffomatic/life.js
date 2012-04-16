@@ -1,0 +1,47 @@
+/* base properties */
+#life > .row {
+  margin: 0;
+  border: 0;
+  padding: 0;
+}
+
+#life > .row > .cell {
+  display: inline-block;
+  position: relative;
+
+  margin: 0px;
+  border-collapse: collapse;
+  border-width: 5px;
+  border-style: solid;
+  padding: 0px;
+
+  height: 50px;
+  width: 50px;
+
+  background-color: black;
+}
+
+#life > .row > .cell > .interior {
+  margin: 17px 0 0 17px;
+  height: 16px;
+  width:16px;
+}
+
+/* state-based coloring */
+
+#life > .row > .cell {
+  border-color: white;
+  background-color: black;
+}
+
+#life > .row > .cell.alive {
+  background-color: white;
+}
+
+#life > .row > .cell.toKill > .interior {
+  background-color: black;
+}
+
+#life > .row > .cell.toSpawn > .interior {
+  background-color: white;
+}

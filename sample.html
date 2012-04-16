@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<head>
+  <title>life.js</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/sample.css" />
+
+  <script type="text/javascript" src="./js/ext/jquery.js"></script>
+  <script type="text/javascript" src="./js/ext/underscore.js"></script>
+  <script type="text/javascript" src="./js/life/state.js"></script>
+  <script type="text/javascript" src="./js/life/render.js"></script>
+  <script type="text/javascript" src="./js/life/pattern.js"></script>
+  <script type="text/javascript" src="./js/sample/patterns.js"></script>
+  <script type="text/javascript" src="./js/sample/driver.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      runSimulation(
+        // Dimensions
+        9, 6,
+        // Seed pattern
+        Pattern.offset(SamplePatterns.acorn, 1, 2),
+        // Rules and options
+        {
+          frameLength: 500,
+          cellDecorator: function(elem, x, y) {
+            $(elem).append('<div class="interior"></div>');
+          }
+        }
+      );
+    });
+  </script>
+</head>
+<body>
+  <div id="life"></div>
+</body>
