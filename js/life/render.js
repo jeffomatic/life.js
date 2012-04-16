@@ -57,6 +57,15 @@ function render(container, state, opts) {
         }
       }
 
+      // Set directional live neighbor classes
+      for (var d in state.hasLiveNeighborAt) {
+        if (state.hasLiveNeighborAt[d][coord]) {
+          $(this).addClass('liveNeighbor' + d);
+        } else {
+          $(this).removeClass('liveNeighbor' + d);
+        }
+      }
+
       ++colId;
     });
 

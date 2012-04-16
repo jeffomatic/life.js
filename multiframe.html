@@ -20,7 +20,7 @@
       var opts = {
         frameLength: 0,
         cellDecorator: function(elem, x, y) {
-          $(elem).append('<div class="interior"></div>');
+          $(elem).append('<div class="cellDot"></div>');
         }
       };
 
@@ -44,11 +44,12 @@
       var safeMarginX = 26;
       var safeMarginY = 26;
       var gridMargin = 5;
-      var cellSize = 40;
-      var interiorSize = 10;
+      var cellSize = 36;
+      var cellDotSize = 10;
       var cellRadius = 0;
-      var interiorRadius = 2;
+      var cellDotRadius = 2;
       var panelCornerRadius = 15;
+      var interiorCornerRadius = 8;
 
       // Dependent variables
       var panelCount = $('.panel').length;
@@ -68,7 +69,7 @@
       var panelStartX = safeMarginX;
       var panelStartY = (trimY - panelY)  / 2;
 
-      var interiorMargin = (cellSize - interiorSize) / 2;
+      var cellDotMargin = (cellSize - cellDotSize) / 2;
 
       // Setup the multiframe
       $('#multiframe').css({
@@ -93,12 +94,12 @@
         'margin-right': 0
       });
 
-      // Setup cell interiors
-      $('.panel > .row > .cell > .interior').css({
-        'margin-top': interiorMargin,
-        'margin-left': interiorMargin,
-        'height': interiorSize,
-        'width': interiorSize
+      // Setup cell cellDots
+      $('.panel > .row > .cell > .cellDot').css({
+        'margin-top': cellDotMargin,
+        'margin-left': cellDotMargin,
+        'height': cellDotSize,
+        'width': cellDotSize
       });
 
       // Set radii
@@ -106,24 +107,49 @@
         $('.panel > .row > .cell').css({
           'border-radius': cellRadius
         });
-      } else if (panelCornerRadius) {
-        $('.panel > .row:first-child > .cell:first-child').css({
-          'border-top-left-radius': panelCornerRadius
-        });
-        $('.panel > .row:first-child > .cell:last-child').css({
-          'border-top-right-radius': panelCornerRadius
-        });
-        $('.panel > .row:last-child > .cell:first-child').css({
-          'border-bottom-left-radius': panelCornerRadius
-        });
-        $('.panel > .row:last-child > .cell:last-child').css({
-          'border-bottom-right-radius': panelCornerRadius
-        });
+      } else {
+        if (panelCornerRadius) {
+          // Panel corners
+          $('.panel > .row:first-child > .cell:first-child').css({
+            'border-top-left-radius': panelCornerRadius
+          });
+          $('.panel > .row:first-child > .cell:last-child').css({
+            'border-top-right-radius': panelCornerRadius
+          });
+          $('.panel > .row:last-child > .cell:first-child').css({
+            'border-bottom-left-radius': panelCornerRadius
+          });
+          $('.panel > .row:last-child > .cell:last-child').css({
+            'border-bottom-right-radius': panelCornerRadius
+          });
+        }
+
+        // Interior corners
+        if (interiorCornerRadius) {
+          var dirs = {
+            'top-left': ['N', 'W'],
+            'top-right': ['N', 'E'],
+            'bottom-left': ['S', 'W'],
+            'bottom-right': ['S', 'E']
+          };
+
+          for (var d in dirs) {
+            var classes = [
+              'liveNeighbor' + dirs[d][0],
+              'liveNeighbor' + dirs[d][1]
+            ].join('.');
+
+            var properties = {};
+            properties['border-' + d + '-radius'] = interiorCornerRadius;
+
+            $('.panel > .row > .cell.' + classes).css(properties);
+          }
+        }
       }
 
-      if (interiorRadius) {
-        $('.panel > .row > .cell > .interior').css({
-          'border-radius': interiorRadius
+      if (cellDotRadius) {
+        $('.panel > .row > .cell > .cellDot').css({
+          'border-radius': cellDotRadius
         });
       }
 
