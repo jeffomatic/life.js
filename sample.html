@@ -15,12 +15,12 @@
     $(document).ready(function() {
       runSimulation(
         // Dimensions
-        9, 6,
+        6, 9,
         // Seed pattern
-        Pattern.offset(SamplePatterns.acorn, 1, 2),
+        Pattern.offset(Pattern.reflectY(Pattern.ccw(SamplePatterns.acorn)), 3, 7),
         // Rules and options
         {
-          frameLength: 500,
+          frameLength: 1000,
           cellDecorator: function(elem, x, y) {
             $(elem).append('<div class="interior"></div>');
           }

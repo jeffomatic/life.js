@@ -5,7 +5,17 @@ function render(elem, state, opts) {
   if (rows.length < state.h) {
     var dy = state.h - rows.length;
     for (var i = 0; i < dy; ++i) {
-      $(elem).append('<div class="row"></div>');
+      // Invert the y position of the row for "intuitive" axes
+      var rowY = state.h - 1 - i;
+
+      var row = document.createElement('div');
+      $(row).addClass('row');
+
+      if (opts && opts.rowDecorator) {
+        opts.rowDecorator(row, rowY);
+      }
+
+      $(elem).append(row);
     }
   }
 
