@@ -1,5 +1,5 @@
 /* base properties */
-#life > .row {
+.panel > .row {
   margin: 0;
   border: 0;
   padding: 0;
@@ -9,7 +9,7 @@
   clear: both;
 }
 
-#life > .row > .cell {
+.panel > .row > .cell {
   float: left;
   position: relative;
 
@@ -22,7 +22,15 @@
   background-color: black;
 }
 
-#life > .row > .cell > .interior {
+.panel > .row:first-child > .cell {
+  margin-top: 0;
+}
+
+.panel > .row > .cell:last-child {
+  margin-right: 0px;
+}
+
+.panel > .row > .cell > .interior {
   margin: 15px 0 0 15px;
   border: 0;
   padding: 0;
@@ -32,19 +40,19 @@
 
 /* state-based coloring */
 
-#life > .row > .cell {
+.panel > .row > .cell {
   border-color: white;
   background-color: black;
 }
 
-#life > .row > .cell.alive {
+.panel > .row > .cell.alive {
   background-color: white;
 }
 
-#life > .row > .cell.toKill > .interior {
+.panel > .row > .cell.toKill > .interior {
   background-color: black;
 }
 
-#life > .row > .cell.toSpawn > .interior {
+.panel > .row > .cell.toSpawn > .interior {
   background-color: white;
 }

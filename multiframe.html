@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<head>
+  <title>life.js</title>
+
+  <link rel="stylesheet" type="text/css" href="./css/sample.css" />
+  <link rel="stylesheet" type="text/css" href="./css/multiframe.css" />
+
+  <script type="text/javascript" src="./js/ext/jquery.js"></script>
+  <script type="text/javascript" src="./js/ext/underscore.js"></script>
+  <script type="text/javascript" src="./js/life/state.js"></script>
+  <script type="text/javascript" src="./js/life/render.js"></script>
+  <script type="text/javascript" src="./js/life/pattern.js"></script>
+  <script type="text/javascript" src="./js/sample/patterns.js"></script>
+  <script type="text/javascript" src="./js/sample/driver.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      var panelCellsX = 6;
+      var panelCellsY = 9;
+      var seed = Pattern.offset(Pattern.reflectY(Pattern.ccw(SamplePatterns.acorn)), 3, 7)
+      var opts = {
+        frameLength: 0,
+        cellDecorator: function(elem, x, y) {
+          $(elem).append('<div class="interior"></div>');
+        }
+      };
+
+      var steps = 1;
+      $('.panel').each(function() {
+        // Create state and advance a fixed number of steps
+        var state = new State(panelCellsX, panelCellsY, seed, opts);
+        for (var i = 0; i < steps; ++i) state.step();
+        ++steps;
+
+        // Set simulation container to current element
+        opts.container = this;
+
+        // Run the simulation
+        runSimulation(state, opts);
+      });
+
+      // Independent variables
+      var trimX = 989;
+      var trimY = 647;
+      var safeMarginX = 26;
+      var safeMarginY = 26;
+      var gridMargin = 5;
+      var cellSize = 40;
+      var interiorSize = 10;
+      var cellRadius = 0;
+      var interiorRadius = 2;
+      var panelCornerRadius = 15;
+
+      // Dependent variables
+      var panelCount = $('.panel').length;
+      var panelMarginsX = panelCount + 1;
+
+      var safeX = trimX - 2 * safeMarginX;
+      var safeY = trimY - 2 * safeMarginY;
+
+      var gridMarginsX = panelCellsX - 1;
+      var gridMarginsY = panelCellsY - 1;
+      var panelX = panelCellsX * cellSize + gridMarginsX * gridMargin;
+      var panelY = panelCellsY * cellSize + gridMarginsY * gridMargin;
+      var totalPanelX = panelX * panelCount;
+      var totalPanelMarginX = trimX - totalPanelX;
+      var panelMarginX = totalPanelMarginX / panelMarginsX;
+
+      var panelStartX = safeMarginX;
+      var panelStartY = (trimY - panelY)  / 2;
+
+      var interiorMargin = (cellSize - interiorSize) / 2;
+
+      // Setup the multiframe
+      $('#multiframe').css({
+        width: trimX,
+        height: trimY
+      });
+
+      // Resize the cells and cell margins
+      $('.panel > .row > .cell').css({
+        'margin-top': gridMargin,
+        'margin-right': gridMargin,
+        'height': cellSize,
+        'width': cellSize
+      });
+
+      // Undo margin adjustments at the edges
+      $('.panel > .row:first-child > .cell').css({
+        'margin-top': 0
+      });
+
+      $('.panel > .row > .cell:last-child').css({
+        'margin-right': 0
+      });
+
+      // Setup cell interiors
+      $('.panel > .row > .cell > .interior').css({
+        'margin-top': interiorMargin,
+        'margin-left': interiorMargin,
+        'height': interiorSize,
+        'width': interiorSize
+      });
+
+      // Set radii
+      if (cellRadius) {
+        $('.panel > .row > .cell').css({
+          'border-radius': cellRadius
+        });
+      } else if (panelCornerRadius) {
+        $('.panel > .row:first-child > .cell:first-child').css({
+          'border-top-left-radius': panelCornerRadius
+        });
+        $('.panel > .row:first-child > .cell:last-child').css({
+          'border-top-right-radius': panelCornerRadius
+        });
+        $('.panel > .row:last-child > .cell:first-child').css({
+          'border-bottom-left-radius': panelCornerRadius
+        });
+        $('.panel > .row:last-child > .cell:last-child').css({
+          'border-bottom-right-radius': panelCornerRadius
+        });
+      }
+
+      if (interiorRadius) {
+        $('.panel > .row > .cell > .interior').css({
+          'border-radius': interiorRadius
+        });
+      }
+
+      // Position the panels
+      var panelCount = $('.panel').length;
+      $('.panel').each(function(panelId) {
+        $(this).css({
+          top: panelStartY,
+          left: panelId * panelX + (panelId + 1) * panelMarginX
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="multiframe">
+    <div class="panel"></div>
+    <div class="panel"></div>
+    <div class="panel"></div>
+  </div>
+</body>

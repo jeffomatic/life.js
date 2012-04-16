@@ -1,6 +1,28 @@
-function runSimulation(width, height, seeds, opts) {
+/**
+ * A. Predefined state
+ *    [0] - State object
+ *    [1] - options
+ * B. Width/height and seeds
+ *    [0] - width
+ *    [1] - height
+ *    [2] - seed pattern
+ *    [3] - options
+ */
+function runSimulation() {
+  var state = null;
+  var opts = null;
+
+  if (arguments[0] instanceof State) {
+    state = arguments[0];
+    opts = arguments[1];
+  } else {
+    state = new State(arguments[0], arguments[1], arguments[2], arguments[3]);
+    opts = arguments[3];
+  }
+
+  // Driver configuration
   var config = {
-    elem: $('#life'),
+    container: $('#life'),
     frameLength: 2000
   };
 
@@ -11,25 +33,15 @@ function runSimulation(width, height, seeds, opts) {
     }
   }
 
-  // Make sure our key options are arrays
-  keyOpts = ['stepKey', 'pauseKey'];
-  for (var i = 0; i < keyOpts.length; ++i ) {
-    var k = keyOpts[i];
-    if (config[k] && !(config[k] instanceof Array)) config[k] = [config[k]];
-  }
-
-  // Create state
-  var state = new State(width, height, seeds, opts);
-
   // Render the initial state
-  render(config.elem, state, opts);
+  render(config.container, state, opts);
 
   // Simulation methods
   var stepCallbackHandle = null;
 
   function stepState() {
     state.step();
-    render(config.elem, state, opts);
+    render(config.container, state, opts);
   }
 
   function pause() {
@@ -63,7 +75,7 @@ function runSimulation(width, height, seeds, opts) {
       }
     },
     click: {
-      elem: config.elem,
+      elem: config.container,
       paramEvents: {
         1: stepTrigger, // left click
         2: pauseToggle // middle click

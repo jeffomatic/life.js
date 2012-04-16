@@ -1,0 +1,10 @@
+#multiframe {
+  position: relative;
+
+  border: 3px dotted #DDD;
+  margin: 5px auto 0 auto;
+}
+
+.panel {
+  position: absolute;
+}

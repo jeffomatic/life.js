@@ -1,6 +1,6 @@
-function render(elem, state, opts) {
+function render(container, state, opts) {
   // Build rows, if necessary
-  rows = $(elem).children('.row');
+  rows = $(container).children('.row');
 
   if (rows.length < state.h) {
     var dy = state.h - rows.length;
@@ -15,13 +15,13 @@ function render(elem, state, opts) {
         opts.rowDecorator(row, rowY);
       }
 
-      $(elem).append(row);
+      $(container).append(row);
     }
   }
 
   // Process rows
   var rowId = 0;
-  $(elem).children('.row').each(function() {
+  $(container).children('.row').each(function() {
     // Invert the y position of the row for "intuitive" axes
     var rowY = state.h - 1 - rowId;
 
