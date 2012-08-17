@@ -28,7 +28,7 @@ var State = (function() {
   // MODULE IMPLEMENTATION
   ////////////////////////
 
-  var module = function(width, height, seeds, opts) {
+  var module = function(width, height, seeds, optRules) {
     this.w = width;
     this.h = height;
     this.rules = {
@@ -39,9 +39,9 @@ var State = (function() {
     };
 
     // Overwrite default rules, if necessary
-    if (opts) {
+    if (optRules) {
       for (var k in this.rules) {
-        if (opts[k] !== undefined) this.rules[k] = opts[k];
+        if (optRules[k] !== undefined) this.rules[k] = optRules[k];
       }
     }
 
@@ -166,6 +166,20 @@ var State = (function() {
     }
 
     this.toExamine = {};
+  };
+
+  module.prototype.countList = function(list) {
+    var i = 0;
+
+    for (var c in this[list]) {
+      if (this[list][c]) ++i;
+    }
+
+    return i;
+  };
+
+  module.prototype.allDead = function() {
+    return this.countList('alive') == 0 && this.countList('toSpawn') == 0;
   };
 
   return module;
